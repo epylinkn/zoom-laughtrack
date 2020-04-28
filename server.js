@@ -15,6 +15,7 @@ let io = require('socket.io').listen(server);
 // Namespace input
 var inputs = io.of("/input");
 var outputs = io.of("/output");
+var debug = io.of("/debug");
 
 debug.on('connection',
   function(socket) {
