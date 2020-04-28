@@ -1,0 +1,38 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 16px;
+}
+
+.container {
+  width: 100%;
+}
+
+#gameArea {
+  float: left;
+  width: 75%;
+}
+
+#scoreboard {
+  float: right;
+  width: 25%;
+  height: 100vh;
+  padding-left: 2%;
+  background-color: black;
+  color: white;
+  font-size: 1rem;
+
+  text-transform: uppercase;
+}
+
+.user {
+  margin: 10px 0;
+}
+
+.lives {
+  display: inline-block;
+  font-size: 1.5rem;
+  width: 2rem;
+  height: 20px;
+}
