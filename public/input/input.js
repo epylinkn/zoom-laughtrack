@@ -68,6 +68,7 @@ function enterPlayMode() {
   socket.emit('username', usernameInput.value());
 
   select(".username-form").hide();
+  select("#clap").show();
 }
 
 let lastShakeTime = 0;

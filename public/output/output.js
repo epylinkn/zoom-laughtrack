@@ -14,6 +14,23 @@ let gameState = "waiting";
 let canvasWidth;
 let canvasHeight;
 
+let songs = []
+let currentSong
+let fading = false
+let fadeStartAt
+let volume
+
+function preload() {
+  soundFormats('mp3', 'wav', 'ogg')
+
+  songs = [
+    loadSound('assets/sounds/heartbeats.m4a'),
+    loadSound('assets/sounds/im-on-fire.m4a'),
+    loadSound('assets/sounds/fade-into-you.m4a'),
+    loadSound('assets/sounds/kiss-me.m4a'),
+  ]
+}
+
 // DEBUG
 // createNewUser("foo", "FOO");
 // createNewUser("bar", "BAR");
@@ -81,10 +98,9 @@ function draw() {
   scoreboard();
 
   // [DONE] WAIT FOR PLAYERS
-  if (Object.keys(users).length < 2) {
-    titleText("Waiting for players... ");
+  if (Object.keys(users).length < 1) {
+    titleText("Waiting for audience... ");
     return;
-
   }
 
   // [DONE] START GAME
@@ -96,6 +112,52 @@ function draw() {
   }
 
   gameArea();
+
+  if (fading && volume == 0) {
+    currentSong.stop()
+    fading = false
+  }
+
+  if (fading && volume > 0) {
+    const elapsedSecs = (millis() - fadeStartAt) / 1000 / 5
+    volume = Math.max(lerp(1.0, 0, elapsedSecs), 0)
+    currentSong.setVolume(volume)
+  }
+}
+
+function mousePressed() {
+  if (getAudioContext().state !== 'running') {
+    getAudioContext().resume()
+  }
+}
+
+function playOnce(soundFile) {
+  if (soundFile.isPlaying()) {
+    return
+  }
+  soundFile.setVolume(1)
+  soundFile.play()
+}
+
+function keyPressed() {
+  console.log(key, 'is pressed')
+  console.log(keyCode, 'is pressed')
+
+  switch (key) {
+    case 'A':
+      if (currentSong) {
+        currentSong.stop()
+      }
+      currentSong = songs[Math.floor(Math.random() * songs.length)]
+      playOnce(currentSong)
+      fading = false
+      break
+    case 'S':
+      fading = true
+      volume = 1.0
+      fadeStartAt = millis()
+      break
+  }
 }
 
 // Helper to display something in the middle...
